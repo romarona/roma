@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f0c1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="محامية متميزة">
+<title>محامية متميزة – رانيا</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0917;
+    --bg-card: #120e24;
+    --bg-card2: #1a1535;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --emerald: #2dba7a;
+    --emerald-dim: rgba(45,186,122,0.12);
+    --red: #e05555;
+    --text: #ede8f5;
+    --text-dim: #7a6fa0;
+    --border: rgba(255,255,255,0.07);
+    --accent: #7c5cbf;
+    --accent2: #9b6fe0;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND ── */
+  .bg-layer {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 15% 10%, rgba(124,92,191,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 85% 80%, rgba(201,168,76,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(45,186,122,0.04) 0%, transparent 70%);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: relative; z-index: 10;
+    padding: 36px 20px 16px;
+    text-align: center;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.3;
+    background: linear-gradient(135deg, #fff 0%, var(--gold-light) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+  }
+
+  .header .subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* ── WEEK NAV ── */
+  .week-nav {
+    position: relative; z-index: 10;
+    display: flex;
+    gap: 8px;
+    padding: 8px 16px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .week-nav::-webkit-scrollbar { display: none; }
+
+  .day-pill {
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+    min-width: 68px;
+  }
+  .day-pill .num {
+    font-size: 20px; font-weight: 900;
+    color: var(--text-dim);
+    display: block;
+    transition: color 0.2s;
+  }
+  .day-pill .lbl {
+    font-size: 10px; color: var(--text-dim);
+    display: block; margin-top: 1px;
+    transition: color 0.2s;
+  }
+  .day-pill .bar {
+    display: block; width: 28px; height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 6px auto 0; overflow: hidden;
+  }
+  .day-pill .bar-fill {
+    height: 100%; background: var(--gold);
+    border-radius: 2px; transition: width 0.4s ease;
+  }
+  .day-pill.active {
+    background: linear-gradient(135deg, #1e1540, #2a1d58);
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(124,92,191,0.3);
+  }
+  .day-pill.active .num,
+  .day-pill.active .lbl { color: white; }
+
+  /* ── PROGRESS CARD ── */
+  .progress-card {
+    position: relative; z-index: 10;
+    margin: 0 16px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .ring-wrap { position: relative; width: 78px; height: 78px; flex-shrink: 0; }
+  .ring-svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 6; }
+  .ring-fill {
+    fill: none; stroke: var(--gold); stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 220; stroke-dashoffset: 220;
+    transition: stroke-dashoffset 0.7s cubic-bezier(0.4,0,0.2,1);
+    filter: drop-shadow(0 0 6px rgba(201,168,76,0.5));
+  }
+  .ring-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .ring-pct { font-size: 19px; font-weight: 900; color: var(--gold); line-height: 1; }
+  .ring-lbl { font-size: 9px; color: var(--text-dim); margin-top: 2px; }
+
+  .progress-info { flex: 1; }
+  .progress-info .day-title { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .progress-info .theme-label {
+    font-size: 12px; color: var(--accent2);
+    font-weight: 600; margin-bottom: 6px;
+  }
+  .progress-info .count-text { font-size: 12px; color: var(--text-dim); }
+  .progress-info .count-text span { color: var(--emerald); font-weight: 700; }
+
+  .reset-btn {
+    background: rgba(224,85,85,0.1);
+    border: 1px solid rgba(224,85,85,0.25);
+    color: var(--red);
+    border-radius: 10px;
+    padding: 8px 11px;
+    font-size: 11px;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    font-weight: 700;
+  }
+  .reset-btn:hover { background: rgba(224,85,85,0.2); }
+
+  /* ── ALL DONE ── */
+  @keyframes shimmer {
+    0%,100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  .all-done {
+    display: none;
+    position: relative; z-index: 10;
+    margin: 0 16px 14px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(45,186,122,0.08));
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 18px;
+    text-align: center;
+    animation: shimmer 2.5s infinite;
+  }
+  .all-done .title { font-size: 18px; font-weight: 900; color: var(--gold); margin-bottom: 3px; }
+  .all-done .sub { font-size: 12px; color: var(--text-dim); }
+
+  /* ── TASKS ── */
+  .tasks-wrap {
+    position: relative; z-index: 10;
+    padding: 0 16px;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+
+  .section-title {
+    font-size: 11px; font-weight: 800;
+    color: var(--accent2);
+    letter-spacing: 1.5px;
+    padding: 10px 4px 2px;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, rgba(155,111,224,0.3), transparent);
+  }
+
+  .task-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .task-card::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.25s;
+    border-radius: 0 16px 16px 0;
+  }
+  .task-card.done {
+    background: linear-gradient(135deg, rgba(45,186,122,0.09), rgba(45,186,122,0.04));
+    border-color: rgba(45,186,122,0.22);
+  }
+  .task-card.done::after { background: var(--emerald); opacity: 1; }
+  .task-card:active { transform: scale(0.985); }
+
+  .task-icon {
+    font-size: 20px; flex-shrink: 0;
+    width: 34px; text-align: center;
+    padding-top: 1px;
+  }
+
+  .task-body { flex: 1; }
+  .task-title {
+    font-size: 15px; font-weight: 700;
+    color: var(--text); margin-bottom: 2px;
+    transition: color 0.25s;
+    line-height: 1.4;
+  }
+  .task-desc {
+    font-size: 12px; color: var(--text-dim);
+    line-height: 1.5; font-weight: 400;
+  }
+  .task-card.done .task-title {
+    color: rgba(255,255,255,0.35);
+    text-decoration: line-through;
+    text-decoration-color: rgba(45,186,122,0.4);
+  }
+  .task-card.done .task-desc { opacity: 0.4; }
+
+  .task-check {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+    transition: all 0.25s ease;
+  }
+  .task-card.done .task-check {
+    background: var(--emerald);
+    border-color: var(--emerald);
+    box-shadow: 0 0 12px rgba(45,186,122,0.4);
+  }
+  .task-check svg { opacity: 0; transform: scale(0); transition: all 0.2s; }
+  .task-card.done .task-check svg { opacity: 1; transform: scale(1); }
+
+  /* ── FOOTER ── */
+  .footer {
+    position: relative; z-index: 10;
+    text-align: center;
+    padding: 28px 20px 44px;
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .footer .heart { color: #e05555; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: linear-gradient(135deg, #1e1540, #2a1d58);
+    border: 1px solid rgba(124,92,191,0.3);
+    color: white; padding: 11px 22px;
+    border-radius: 30px; font-size: 13px;
+    font-weight: 600; font-family: 'Tajawal', sans-serif;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    z-index: 999;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">⚖️ خطة التميز المهني – 7 أيام</div>
+  <h1>محامية متميزة يا رانيا</h1>
+  <div class="subtitle">تطوير ذاتي ومهاري في مجال المحاماة</div>
+</div>
+
+<!-- WEEK NAV -->
+<div class="week-nav" id="weekNav"></div>
+
+<!-- PROGRESS -->
+<div class="progress-card">
+  <div class="ring-wrap">
+    <svg class="ring-svg" width="78" height="78" viewBox="0 0 78 78">
+      <circle class="ring-bg" cx="39" cy="39" r="35"/>
+      <circle class="ring-fill" id="ringFill" cx="39" cy="39" r="35"/>
+    </svg>
+    <div class="ring-center">
+      <span class="ring-pct" id="ringPct">0%</span>
+      <span class="ring-lbl">إنجاز</span>
+    </div>
+  </div>
+  <div class="progress-info">
+    <div class="day-title" id="dayTitle">اليوم الأول</div>
+    <div class="theme-label" id="dayTheme"></div>
+    <div class="count-text">أتممتِ <span id="doneCount">0</span> من <span id="totalCount">0</span> مهمة</div>
+  </div>
+  <button class="reset-btn" onclick="resetDay()">إعادة</button>
+</div>
+
+<!-- ALL DONE -->
+<div class="all-done" id="allDone">
+  <div class="title">⚖️ أحسنتِ يا رانيا! ⚖️</div>
+  <div class="sub">يوم مثمر – كل خطوة تقربك من التميز</div>
+</div>
+
+<!-- TASKS -->
+<div class="tasks-wrap" id="tasksWrap"></div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="heart">❤️</span>
+  لنبتغي فضل الله ورحمته وما عند الله لباقي
+  <span class="heart">❤️</span>
+  <br>
+  <span style="font-size:11px">المحامية المتميزة لا تتوقف عن التعلم</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DAYS_LABELS = ['الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع'];
+
+const WEEK_PLAN = [
+  {
+    theme: '🎯 فن التفاوض',
+    tasks: [
+      { id:'t1', icon:'📚', title:'اقرئي مبادئ التفاوض', desc:'خصصي 20 دقيقة لقراءة مبادئ التفاوض الفعّال في القضايا المدنية' },
+      { id:'t2', icon:'🎧', title:'استمعي لبودكاست قانوني', desc:'اختاري حلقة عن مهارات التفاوض مع الخصوم أو المحاكم' },
+      { id:'t3', icon:'📝', title:'سجّلي 3 تكتيكات تفاوضية', desc:'اكتبي في دفترك 3 أساليب تفاوض ستطبقيهم في قضيتك القادمة' },
+      { id:'t4', icon:'🪞', title:'مارسي أمام المرآة', desc:'افتحي قضية قديمة وتدربي على تقديم حجتك بثقة لمدة 10 دقائق' },
+      { id:'t5', icon:'💡', title:'تعلمي BATNA', desc:'اقرئي عن مفهوم أفضل بديل عن الاتفاق التفاوضي وكيف تطبقيه' },
+    ]
+  },
+  {
+    theme: '🗣️ فن التواصل والإقناع',
+    tasks: [
+      { id:'t1', icon:'🎤', title:'سجّلي صوتك وحللي نبرتك', desc:'سجّلي دقيقتين وأنتِ تشرحي قضية ثم استمعي لاكتشاف نقاط التحسين' },
+      { id:'t2', icon:'👁️', title:'تعلمي لغة الجسد القانونية', desc:'اقرئي عن التواصل البصري والوقفة المهنية أمام القضاة' },
+      { id:'t3', icon:'📖', title:'اقرئي حكماً قضائياً بصوت عالٍ', desc:'اختاري حكماً وأعيدي صياغة حيثياته بأسلوبك لتطوير طلاقتك' },
+      { id:'t4', icon:'✍️', title:'اكتبي مذكرة دفاع مصغّرة', desc:'في صفحة واحدة، لخصي دفاعك عن قضية افتراضية بشكل مقنع' },
+      { id:'t5', icon:'🤝', title:'تواصلي مع زميلة في المهنة', desc:'أجري محادثة مهنية مع زميلة لتبادل الخبرات وبناء الشبكة المهنية' },
+    ]
+  },
+  {
+    theme: '⏰ إدارة الوقت والملفات',
+    tasks: [
+      { id:'t1', icon:'🗂️', title:'رتّبي ملفاتك بنظام الأولويات', desc:'صنّفي قضاياك الحالية: عاجل/مهم، مهم/غير عاجل، يمكن تفويضه' },
+      { id:'t2', icon:'📅', title:'ضعي جدولاً أسبوعياً للقضايا', desc:'خصصي 15 دقيقة لتخطيط مواعيد جلساتك ومهام الأسبوع القادم' },
+      { id:'t3', icon:'⏱️', title:'طبّقي تقنية البومودورو', desc:'اعملي 25 دقيقة متواصلة على ملف ثم استريحي 5 دقائق' },
+      { id:'t4', icon:'📲', title:'راجعي أدوات إدارة الوقت', desc:'اطّلعي على تطبيق Notion أو Trello لتنظيم قضاياك رقمياً' },
+      { id:'t5', icon:'🚫', title:'تعلمي قول لا باحترافية', desc:'اكتبي 3 طرق لرفض قضايا خارج نطاق تخصصك بأسلوب مهني' },
+    ]
+  },
+  {
+    theme: '🧠 التفكير النقدي وتحليل القضايا',
+    tasks: [
+      { id:'t1', icon:'🔍', title:'حللي حكماً قضائياً حديثاً', desc:'اقرئي حكماً صادراً حديثاً وحددي الأسباب والحيثيات والمبادئ القانونية' },
+      { id:'t2', icon:'⚖️', title:'ادرسي قضية من زاويتين', desc:'خذي قضية وحللي حجج الدفاع والادعاء معاً لتوسيع منظورك' },
+      { id:'t3', icon:'🗺️', title:'ارسمي خريطة ذهنية لقضية', desc:'استخدمي ورقة أو تطبيق لرسم خريطة ذهنية لأحد ملفاتك' },
+      { id:'t4', icon:'📰', title:'تابعي مستجدات التشريعات', desc:'خصصي 15 دقيقة لقراءة أحدث التعديلات التشريعية في مجال عملك' },
+      { id:'t5', icon:'💬', title:'ناقشي قضية مع زميل', desc:'شاركي قضية مثيرة للجدل مع زميل وتبادلا الحجج والآراء القانونية' },
+    ]
+  },
+  {
+    theme: '💪 الثقة بالنفس والحضور المهني',
+    tasks: [
+      { id:'t1', icon:'👔', title:'اعتني بمظهرك المهني اليوم', desc:'الحضور المهني يبدأ من الشكل – اختاري ملابس تعكس ثقتك وكفاءتك' },
+      { id:'t2', icon:'🌟', title:'اكتبي 5 إنجازاتك المهنية', desc:'ذكّري نفسك بأهم 5 قضايا نجحتِ فيها لتعزيز ثقتك بنفسك' },
+      { id:'t3', icon:'🎯', title:'حددي هدفاً مهنياً لهذا الشهر', desc:'اكتبي هدفاً واحداً واضحاً وقابلاً للقياس تريدين تحقيقه قريباً' },
+      { id:'t4', icon:'🧘', title:'مارسي تمرين التنفس قبل الجلسة', desc:'تعلمي تقنية التنفس 4-7-8 للتحكم في التوتر قبل المرافعات' },
+      { id:'t5', icon:'📸', title:'طوّري ملفك المهني الرقمي', desc:'راجعي حسابك على LinkedIn وأضيفي آخر قضاياك وإنجازاتك' },
+    ]
+  },
+  {
+    theme: '📜 البحث القانوني والصياغة',
+    tasks: [
+      { id:'t1', icon:'🔎', title:'تعلمي البحث في مواقع المحاكم', desc:'اكتشفي كيف تبحثي في قواعد البيانات القانونية والأحكام الإلكترونية' },
+      { id:'t2', icon:'✒️', title:'راجعي عقداً أو مذكرة قديمة', desc:'خذي وثيقة سابقة وحسّني صياغتها وأسلوبها القانوني' },
+      { id:'t3', icon:'📋', title:'اعملي قالباً لعقد متكرر', desc:'اختاري عقداً تكررت قضاياه وأعدي قالباً احترافياً جاهزاً له' },
+      { id:'t4', icon:'🌐', title:'تصفحي مواقع قانونية دولية', desc:'اطّلعي على موقع قانوني دولي لمعرفة مستجدات القانون المقارن' },
+      { id:'t5', icon:'📑', title:'لخّصي مادة قانونية في صفحة', desc:'اختاري مادة من قانون تعملين فيه ولخصيها بأسلوبك الخاص' },
+    ]
+  },
+  {
+    theme: '🚀 التخطيط للمستقبل المهني',
+    tasks: [
+      { id:'t1', icon:'🗺️', title:'ارسمي خارطة مسيرتك المهنية', desc:'في 5 سنوات أين تريدين أن تكوني؟ اكتبي خطوات الوصول' },
+      { id:'t2', icon:'📚', title:'خططي لدورة تدريبية', desc:'ابحثي عن دورة في التحكيم أو القانون التجاري وسجّلي فيها' },
+      { id:'t3', icon:'🤝', title:'وسّعي شبكتك المهنية', desc:'تواصلي مع محامٍ أو قاضٍ تحترمين تجربته وطلبي نصيحة مهنية' },
+      { id:'t4', icon:'💰', title:'راجعي أتعابك المهنية', desc:'قيّمي هل أتعابك تعكس خبرتك وتخصصك؟ اكتبي استراتيجيتك' },
+      { id:'t5', icon:'🌱', title:'راجعي أسبوعك واحتفلي بنفسك', desc:'اكتبي ما أنجزتِه هذا الأسبوع وكافئي نفسك – أنتِ تستحقين! 🌟' },
+    ]
+  }
+];
+
+const TOASTS = [
+  'ممتاز! خطوة نحو التميز ⚖️',
+  'أحسنتِ يا رانيا 🌟',
+  'المحامية المجتهدة تتقدم دائماً 💪',
+  'بارك الله في مجهودك ❤️',
+  'كل يوم تعلم هو استثمار في مستقبلك 📚',
+  'رائع! استمري في هذا الإيقاع 🎯',
+  'الاجتهاد طريق النجاح ✨',
+];
+
+let currentDay = 0;
+let data = {};
+
+function loadData() {
+  try {
+    const saved = localStorage.getItem('rania_lawyer_v1');
+    if (saved) data = JSON.parse(saved);
+  } catch(e) {}
+  for (let d = 0; d < 7; d++) {
+    if (!data[d]) {
+      data[d] = {};
+      WEEK_PLAN[d].tasks.forEach(t => data[d][t.id] = false);
+    }
+  }
+}
+
+function saveData() {
+  try { localStorage.setItem('rania_lawyer_v1', JSON.stringify(data)); } catch(e) {}
+}
+
+function getDayProgress(d) {
+  const tasks = WEEK_PLAN[d].tasks;
+  const done = tasks.filter(t => data[d] && data[d][t.id]).length;
+  return { done, total: tasks.length, pct: Math.round(done / tasks.length * 100) };
+}
+
+function renderWeekNav() {
+  const nav = document.getElementById('weekNav');
+  nav.innerHTML = '';
+  DAYS_LABELS.forEach((lbl, i) => {
+    const { pct } = getDayProgress(i);
+    const el = document.createElement('div');
+    el.className = 'day-pill' + (i === currentDay ? ' active' : '');
+    el.innerHTML = `
+      <span class="num">${i + 1}</span>
+      <span class="lbl">اليوم ${lbl}</span>
+      <span class="bar"><span class="bar-fill" style="width:${pct}%"></span></span>
+    `;
+    el.onclick = () => { currentDay = i; render(); };
+    nav.appendChild(el);
+  });
+  setTimeout(() => {
+    const active = nav.querySelector('.active');
+    if (active) active.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }, 60);
+}
+
+function renderProgress() {
+  const { done, total, pct } = getDayProgress(currentDay);
+  document.getElementById('dayTitle').textContent = `اليوم ${DAYS_LABELS[currentDay]}`;
+  document.getElementById('dayTheme').textContent = WEEK_PLAN[currentDay].theme;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('ringPct').textContent = pct + '%';
+  const circumference = 220;
+  document.getElementById('ringFill').style.strokeDashoffset = circumference - (circumference * pct / 100);
+  document.getElementById('allDone').style.display = (done === total) ? 'block' : 'none';
+}
+
+function renderTasks() {
+  const wrap = document.getElementById('tasksWrap');
+  wrap.innerHTML = '';
+
+  const title = document.createElement('div');
+  title.className = 'section-title';
+  title.textContent = 'مهام اليوم';
+  wrap.appendChild(title);
+
+  WEEK_PLAN[currentDay].tasks.forEach(task => {
+    const isDone = data[currentDay][task.id];
+    const card = document.createElement('div');
+    card.className = 'task-card' + (isDone ? ' done' : '');
+    card.innerHTML = `
+      <span class="task-icon">${task.icon}</span>
+      <div class="task-body">
+        <div class="task-title">${task.title}</div>
+        <div class="task-desc">${task.desc}</div>
+      </div>
+      <span class="task-check">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M1.5 6.5L5 10L11.5 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    `;
+    card.onclick = () => toggleTask(task.id, card);
+    wrap.appendChild(card);
+  });
+}
+
+function toggleTask(taskId, card) {
+  const was = data[currentDay][taskId];
+  data[currentDay][taskId] = !was;
+  saveData();
+  card.classList.toggle('done', !was);
+  if (!was) showToast(TOASTS[Math.floor(Math.random() * TOASTS.length)]);
+  renderProgress();
+  renderWeekNav();
+}
+
+function resetDay() {
+  if (!confirm('إعادة تعيين اليوم ' + DAYS_LABELS[currentDay] + '؟')) return;
+  WEEK_PLAN[currentDay].tasks.forEach(t => data[currentDay][t.id] = false);
+  saveData(); render();
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function render() {
+  renderWeekNav();
+  renderProgress();
+  renderTasks();
+}
+
+loadData();
+render();
+</script>
+</body>
+</html>
